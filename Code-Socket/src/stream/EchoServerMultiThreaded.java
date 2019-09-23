@@ -10,14 +10,14 @@ package stream;
 import java.io.*;
 import java.net.*;
 
-public class EchoServerMultiThreaded  {
+public class EchoServerMultiThreaded {
 
     /**
      * main method
-     * @param EchoServer port
      *
+     * @param EchoServer port
      **/
-    public static void main(String args[]){
+    public static void main(String args[]) {
         ServerSocket listenSocket;
 
         if (args.length != 1) {
@@ -30,7 +30,11 @@ public class EchoServerMultiThreaded  {
             while (true) {
                 Socket clientSocket = listenSocket.accept();
                 System.out.println("Connexion from:" + clientSocket.getInetAddress());
+                ObjectOutputStream objectOutputStream = new ObjectOutputStream(clientSocket.getOutputStream());
+
+                objectOutputStream.writeObject("[Server]: Bonjour");
                 ClientThread ct = new ClientThread(clientSocket);
+
                 ct.start();
             }
         } catch (Exception e) {

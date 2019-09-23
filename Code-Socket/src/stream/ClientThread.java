@@ -21,6 +21,7 @@ public class ClientThread
 
     /**
      * receives a request from client then sends an echo to the client
+     *
      * @param clientSocket the client socket
      **/
     public void run() {
@@ -32,6 +33,7 @@ public class ClientThread
             while (true) {
                 String line = socIn.readLine();
                 socOut.println(line);
+                System.out.println("Client said: " + line);
             }
         } catch (Exception e) {
             System.err.println("Error in EchoServer:" + e);
