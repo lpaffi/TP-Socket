@@ -25,9 +25,12 @@ public class EchoServer {
                     new InputStreamReader(clientSocket.getInputStream()));
             PrintStream socOut = new PrintStream(clientSocket.getOutputStream());
             while (true) {
+                System.out.println("Before socIn.readLine");
                 String line = socIn.readLine();
+                System.out.println("After socIn.readLine");
                 socOut.println(line);
-                if(line == null ) {
+                System.out.println("After socOut.printLn");
+                if (line == null) {
                     System.out.println("Client disconnected");
                     break;
                 }
@@ -42,8 +45,6 @@ public class EchoServer {
 
     /**
      * main method
-     *
-     * @param EchoServer port
      **/
     public static void main(String args[]) {
         ServerSocket listenSocket;
@@ -54,13 +55,13 @@ public class EchoServer {
         }
         try {
             listenSocket = new ServerSocket(Integer.parseInt(args[0])); //port
-            System.out.println("Server connected on port "+Integer.parseInt(args[0]));
+            System.out.println("Server connected on port " + Integer.parseInt(args[0]));
 
             while (true) {
                 Socket clientSocket = listenSocket.accept();
                 System.out.println("Connexion from: " + clientSocket.getInetAddress());
-                OutputStream outputStream = clientSocket.getOutputStream();
-                outputStream.write("Bonjour".getBytes());
+                ObjectOutputStream objectOutputStream = new ObjectOutputStream(clientSocket.getOutputStream());
+                objectOutputStream.writeObject("Bonjour");
                 doService(clientSocket);
             }
         } catch (Exception e) {

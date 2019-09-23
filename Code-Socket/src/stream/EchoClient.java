@@ -10,15 +10,14 @@ import java.io.*;
 import java.net.*;
 
 
-
 public class EchoClient {
 
 
     /**
-     *  main method
-     *  accepts a connection, receives a message from client then sends an echo to the client
+     * main method
+     * accepts a connection, receives a message from client then sends an echo to the client
      **/
-    public static void main(String[] args) throws IOException {
+    public static void main(String[] args) throws IOException, ClassNotFoundException {
 
         Socket clientToServerSocket = null;
         PrintStream socOut = null;
@@ -32,28 +31,27 @@ public class EchoClient {
 
         try {
             // creation socket ==> connexion
-            clientToServerSocket = new Socket(args[0],new Integer(args[1]).intValue());
+            clientToServerSocket = new Socket(args[0], new Integer(args[1]).intValue());
             System.out.println("Connected to server " + clientToServerSocket.getInetAddress());
             socIn = new BufferedReader(
                     new InputStreamReader(clientToServerSocket.getInputStream()));
-            socOut= new PrintStream(clientToServerSocket.getOutputStream());
+            socOut = new PrintStream(clientToServerSocket.getOutputStream());
             stdIn = new BufferedReader(new InputStreamReader(System.in));
         } catch (UnknownHostException e) {
             System.err.println("Don't know about host:" + args[0]);
             System.exit(1);
         } catch (IOException e) {
             System.err.println("Couldn't get I/O for "
-                    + "the connection to:"+ args[0]);
+                    + "the connection to:" + args[0]);
             System.exit(1);
         }
-        InputStream inputStream = clientToServerSocket.getInputStream();
-        byte[] b = new byte[100];
-        int num = inputStream.read(b);
-        String message = new String(b);
-        System.out.println("Server said: "+message);
+
+        ObjectInputStream objectInputStream = new ObjectInputStream(clientToServerSocket.getInputStream());
+        String message = (String) objectInputStream.readObject();
+        System.out.println("Server said: " + message);
         String line;
         while (true) {
-            line=stdIn.readLine();
+            line = stdIn.readLine();
             if (line.equals(".")) break;
             socOut.println(line);
             System.out.println("echo: " + socIn.readLine());
