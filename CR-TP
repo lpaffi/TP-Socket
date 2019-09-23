@@ -1,0 +1,5 @@
+c) Le serveur ne se connecte qu’au premier client lancé.
+Si on lance trois clients et qu’on envoie First, Second et Third dans chacun, il y a que “First” qui apparait sur le terminal du Serveur.
+Ensuite, à mesure qu’on déconnecte les clients, les autres messages arrivent (Comme s’il y avait une queue d’attente).
+Ceci montre que la méthode accept est bloque la thread du serveur.
+ 
