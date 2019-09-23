@@ -7,8 +7,11 @@
 
 package stream;
 
-import java.io.*;
-import java.net.*;
+import domain.Message;
+
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
+import java.net.Socket;
 
 public class ClientThread
         extends Thread {
@@ -21,19 +24,15 @@ public class ClientThread
 
     /**
      * receives a request from client then sends an echo to the client
-     *
-     * @param clientSocket the client socket
      **/
     public void run() {
         try {
-            BufferedReader socIn = null;
-            socIn = new BufferedReader(
-                    new InputStreamReader(clientSocket.getInputStream()));
-            PrintStream socOut = new PrintStream(clientSocket.getOutputStream());
+            ObjectInputStream objectInputStream = new ObjectInputStream(clientSocket.getInputStream());
+            ObjectOutputStream objectOutputStream = new ObjectOutputStream(clientSocket.getOutputStream());
+
             while (true) {
-                String line = socIn.readLine();
-                socOut.println(line);
-                System.out.println("Client said: " + line);
+                Message clientMessage = (Message) objectInputStream.readObject();
+                System.out.println(clientMessage.toString());
             }
         } catch (Exception e) {
             System.err.println("Error in EchoServer:" + e);

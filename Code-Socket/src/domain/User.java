@@ -18,6 +18,9 @@ public class User {
         this.conversationsList = conversationsList;
     }
 
+    public User() {
+    }
+
     public String getName() {
         return name;
     }

@@ -1,29 +1,29 @@
 package domain;
 
-import java.net.InetAddress;
+import java.io.Serializable;
 import java.util.Date;
-import java.util.Objects;
 
-public class Message {
+public class Message implements Serializable {
 
-    private InetAddress author;
+
+    private String username;
 
     private String content;
 
     private Date date;
 
-    public Message(InetAddress author, String content, Date date) {
-        this.author = author;
+    public Message(String username, String content, Date date) {
+        this.username = username;
         this.content = content;
         this.date = date;
     }
 
-    public InetAddress getAuthor() {
-        return author;
+    public String getUsername() {
+        return username;
     }
 
-    public void setAuthor(InetAddress author) {
-        this.author = author;
+    public void setUsername(String username) {
+        this.username = username;
     }
 
     public String getContent() {
@@ -42,18 +42,9 @@ public class Message {
         this.date = date;
     }
 
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-        Message message = (Message) o;
-        return Objects.equals(author, message.author) &&
-                Objects.equals(content, message.content) &&
-                Objects.equals(date, message.date);
-    }
 
     @Override
-    public int hashCode() {
-        return Objects.hash(author, content, date);
+    public String toString() {
+        return "[ "+username+" ]: "+content;
     }
 }

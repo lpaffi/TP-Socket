@@ -7,6 +7,8 @@
 
 package stream;
 
+import domain.Conversation;
+
 import java.io.*;
 import java.net.*;
 
@@ -28,13 +30,14 @@ public class EchoServerMultiThreaded {
             listenSocket = new ServerSocket(Integer.parseInt(args[0])); //port
             System.out.println("Server ready...");
             while (true) {
-                Socket clientSocket = listenSocket.accept();
-                System.out.println("Connexion from:" + clientSocket.getInetAddress());
+                Socket clientSocket = listenSocket.accept(); // new socket created
+
+                System.out.println("Connexion from: " + clientSocket.getInetAddress());
+
                 ObjectOutputStream objectOutputStream = new ObjectOutputStream(clientSocket.getOutputStream());
+                objectOutputStream.writeObject("Bonjour");
 
-                objectOutputStream.writeObject("[Server]: Bonjour");
                 ClientThread ct = new ClientThread(clientSocket);
-
                 ct.start();
             }
         } catch (Exception e) {

@@ -1,26 +1,38 @@
 package domain;
 
 import java.net.InetAddress;
+import java.net.Socket;
 import java.util.List;
 import java.util.Objects;
 
 public class Conversation {
 
-    private List<InetAddress> recipients;
+    private List<Socket> members;
 
     private List<Message> history;
 
-    public Conversation(List<InetAddress> recipients, List<Message> history) {
-        this.recipients = recipients;
+    public Conversation(List<Socket> recipients, List<Message> history) {
+        this.members = recipients;
         this.history = history;
     }
 
-    public List<InetAddress> getRecipients() {
-        return recipients;
+    public Conversation() {
     }
 
-    public void setRecipients(List<InetAddress> recipients) {
-        this.recipients = recipients;
+    public List<Socket> getMembers() {
+        return members;
+    }
+
+    public void setMembers(List<Socket> members) {
+        this.members = members;
+    }
+
+    public void addMember(Socket member) {
+        this.members.add(member);
+    }
+
+    public void removeMember(InetAddress member) {
+        this.members.remove(member);
     }
 
     public List<Message> getHistory() {
@@ -31,17 +43,21 @@ public class Conversation {
         this.history = history;
     }
 
+    public void addMessage(Message message) {
+        this.history.add(message);
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Conversation that = (Conversation) o;
-        return Objects.equals(recipients, that.recipients) &&
+        return Objects.equals(members, that.members) &&
                 Objects.equals(history, that.history);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(recipients, history);
+        return Objects.hash(members, history);
     }
 }
