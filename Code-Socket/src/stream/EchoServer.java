@@ -12,10 +12,6 @@ import java.net.*;
 
 public class EchoServer {
 
-    private static int SERVER_PORT = 5000;
-    private static DataInputStream dataInputStream = null;
-    private static DataOutputStream dataOutputStream = null;
-
     /**
      * receives a request from client then sends an echo to the client
      *
@@ -23,41 +19,49 @@ public class EchoServer {
      **/
     static void doService(Socket clientSocket) {
         try {
-            String clientAddress = clientSocket.getInetAddress().toString();
-            dataInputStream = new DataInputStream(
-                    new BufferedInputStream(clientSocket.getInputStream()));
 
-            String line = "";
-
-            // reads message from client until "Over" is sent
-            while (!line.equals("Quit")) {
-                try {
-                    line = dataInputStream.readUTF();
-                    System.out.println("["+clientAddress+"] : "+line);
-
-                } catch (IOException i) {
+            BufferedReader socIn = null;
+            socIn = new BufferedReader(
+                    new InputStreamReader(clientSocket.getInputStream()));
+            PrintStream socOut = new PrintStream(clientSocket.getOutputStream());
+            while (true) {
+                String line = socIn.readLine();
+                socOut.println(line);
+                if(line == null ) {
+                    System.out.println("Client disconnected");
                     break;
                 }
+                System.out.println("Client said: " +
+                        line);
             }
-        } catch (IOException e) {
-            e.printStackTrace();
+
+        } catch (Exception e) {
+            System.err.println("Error in EchoServer:" + e);
         }
     }
 
+    /**
+     * main method
+     *
+     * @param EchoServer port
+     **/
     public static void main(String args[]) {
         ServerSocket listenSocket;
+
+        if (args.length != 1) {
+            System.out.println("Usage: java EchoServer <EchoServer port>");
+            System.exit(1);
+        }
         try {
-            listenSocket = new ServerSocket(SERVER_PORT);
-
-            System.out.println("Server started on port " + SERVER_PORT);
-
-            System.out.println("Waiting for a client ...");
+            listenSocket = new ServerSocket(Integer.parseInt(args[0])); //port
+            System.out.println("Server connected on port "+Integer.parseInt(args[0]));
 
             while (true) {
                 Socket clientSocket = listenSocket.accept();
-                System.out.println("Client connected: " + clientSocket.getInetAddress());
+                System.out.println("Connexion from: " + clientSocket.getInetAddress());
+                OutputStream outputStream = clientSocket.getOutputStream();
+                outputStream.write("Bonjour".getBytes());
                 doService(clientSocket);
-                System.out.println("Client closed connection");
             }
         } catch (Exception e) {
             System.err.println("Error in EchoServer:" + e);
@@ -65,4 +69,3 @@ public class EchoServer {
     }
 }
 
-  
