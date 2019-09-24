@@ -44,32 +44,25 @@ public class EchoClient {
             System.exit(1);
         }
 
-        ObjectInputStream objectInputStream = new ObjectInputStream(clientToServerSocket.getInputStream());
-        ObjectOutputStream objectOutputStream = new ObjectOutputStream(clientToServerSocket.getOutputStream());
-
-        String serverMessage = (String) objectInputStream.readObject();
-
-        System.out.println("Server said: " + serverMessage);
-
         System.out.println("Quel est votre nom d'utilisateur ? ");
 
         String name = stdIn.readLine();
 
         System.out.println("Bienvenue à la salle de conversation, " + name + " !");
 
+        System.out.println("Pour quitter la conversation, il suffit d'envoyer le message  'quit' ");
+
         User user = new User();
         user.setName(name);
 
-        String line;
+        ClientWriteThread clientWriteThread = new ClientWriteThread(clientToServerSocket, user);
+        ClientReadThread clientReadThread = new ClientReadThread(clientToServerSocket);
+
+        clientWriteThread.start();
+        clientReadThread.start();
+
         while (true) {
-            line = stdIn.readLine();
-            if (line.equals(".")) break;
-            Message message = new Message(name, line, new Date());
-            objectOutputStream.writeObject(message);
-            System.out.println("echo: " + message.getContent());
         }
-        stdIn.close();
-        clientToServerSocket.close();
     }
 }
 

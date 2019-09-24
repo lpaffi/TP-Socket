@@ -2,12 +2,13 @@ package domain;
 
 import java.net.InetAddress;
 import java.net.Socket;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
 public class Conversation {
 
-    private List<Socket> members;
+    private List<Socket> members = new ArrayList<Socket>();
 
     private List<Message> history;
 
@@ -59,5 +60,12 @@ public class Conversation {
     @Override
     public int hashCode() {
         return Objects.hash(members, history);
+    }
+
+    @Override
+    public String toString() {
+        return "Conversation{" +
+                "members=" + members +
+                '}';
     }
 }
