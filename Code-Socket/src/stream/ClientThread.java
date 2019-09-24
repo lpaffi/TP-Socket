@@ -25,8 +25,8 @@ public class ClientThread
 
     private List<ObjectOutputStream> writers;
 
-    ClientThread(Socket s, List<ObjectOutputStream> writers) {
-        this.clientSocket = s;
+    ClientThread(Socket socket, List<ObjectOutputStream> writers) {
+        this.clientSocket = socket;
         this.writers = writers;
     }
 

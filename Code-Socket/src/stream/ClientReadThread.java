@@ -4,18 +4,13 @@ import domain.Message;
 
 import java.io.IOException;
 import java.io.ObjectInputStream;
-import java.net.Socket;
 
 public class ClientReadThread extends Thread {
 
     private ObjectInputStream objectInputStream;
 
-    public ClientReadThread(Socket socket) {
-        try {
-            this.objectInputStream = new ObjectInputStream(socket.getInputStream());
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+    public ClientReadThread(ObjectInputStream objectInputStream) {
+        this.objectInputStream = objectInputStream;
     }
 
     public void run() {

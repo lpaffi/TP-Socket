@@ -21,7 +21,7 @@ public class EchoClient {
      * main method
      * accepts a connection, receives a message from client then sends an echo to the client
      **/
-    public static void main(String[] args) throws IOException, ClassNotFoundException {
+    public static void main(String[] args) throws IOException {
 
         Socket clientToServerSocket = null;
         BufferedReader stdIn = new BufferedReader(new InputStreamReader(System.in));
@@ -55,9 +55,8 @@ public class EchoClient {
         User user = new User();
         user.setName(name);
 
-        ClientWriteThread clientWriteThread = new ClientWriteThread(clientToServerSocket, user);
-        ClientReadThread clientReadThread = new ClientReadThread(clientToServerSocket);
-
+        ClientWriteThread clientWriteThread = new ClientWriteThread(new ObjectOutputStream(clientToServerSocket.getOutputStream()), user);
+        ClientReadThread clientReadThread = new ClientReadThread(new ObjectInputStream(clientToServerSocket.getInputStream()));
         clientWriteThread.start();
         clientReadThread.start();
 

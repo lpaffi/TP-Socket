@@ -16,12 +16,8 @@ public class ClientWriteThread extends Thread {
 
     private static String EXIT_MESSAGE = "quit";
 
-    public ClientWriteThread(Socket socket, User user) {
-        try {
-            this.objectOutputStream = new ObjectOutputStream(socket.getOutputStream());
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+    public ClientWriteThread(ObjectOutputStream objectOutputStream, User user) {
+        this.objectOutputStream = objectOutputStream;
         this.user = user;
     }
 
