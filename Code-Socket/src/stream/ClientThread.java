@@ -7,17 +7,14 @@
 
 package stream;
 
-import domain.Conversation;
-import domain.History;
 import domain.Message;
 
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.net.Socket;
+import java.util.Date;
 import java.util.HashMap;
-import java.util.List;
-import java.util.stream.Collectors;
 
 public class ClientThread
         extends Thread {
@@ -25,6 +22,10 @@ public class ClientThread
     private Socket clientSocket;
 
     private HashMap<String, ObjectOutputStream> writers;
+
+    private final String EXIT_MESSAGE = "quit";
+
+    private final String QUIT_MESSAGE = "Disconnecting";
 
     ClientThread(Socket socket, HashMap<String, ObjectOutputStream> writers) {
         this.clientSocket = socket;
@@ -47,7 +48,17 @@ public class ClientThread
             while (true) {
                 Message clientMessage = (Message) objectInputStream.readObject();
                 System.out.println(clientMessage.toString());
-                broadcastMessage(clientMessage);
+                if (clientMessage.getContent().equals(EXIT_MESSAGE)) {
+                    String socketId = clientSocket.getInetAddress().toString() + ":" + clientSocket.getPort();
+                    ObjectOutputStream clientQuitting = writers.get(socketId);
+                    Message quitMessage = new Message("Server", QUIT_MESSAGE, new Date());
+                    clientQuitting.writeObject(quitMessage);
+                    writers.remove(socketId);
+                    clientSocket.close();
+                    break;
+                } else {
+                    broadcastMessage(clientMessage);
+                }
             }
         } catch (Exception e) {
             System.err.println("Error in ClientThread:" + e);

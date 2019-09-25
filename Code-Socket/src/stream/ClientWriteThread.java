@@ -4,8 +4,10 @@ package stream;
 import domain.Message;
 import domain.User;
 
-import java.io.*;
-import java.net.Socket;
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.io.ObjectOutputStream;
 import java.util.Date;
 
 public class ClientWriteThread extends Thread {
@@ -14,7 +16,7 @@ public class ClientWriteThread extends Thread {
 
     User user;
 
-    private static String EXIT_MESSAGE = "quit";
+    private final String EXIT_MESSAGE = "quit";
 
     public ClientWriteThread(ObjectOutputStream objectOutputStream, User user) {
         this.objectOutputStream = objectOutputStream;
@@ -32,10 +34,12 @@ public class ClientWriteThread extends Thread {
             } catch (IOException e) {
                 e.printStackTrace();
             }
-            if (line.equals(EXIT_MESSAGE)) break;
             Message message = new Message(user.getName(), line, new Date());
             try {
                 objectOutputStream.writeObject(message);
+                if (message.getContent().equals(EXIT_MESSAGE)) {
+                    this.stop();
+                }
             } catch (IOException e) {
                 e.printStackTrace();
             }

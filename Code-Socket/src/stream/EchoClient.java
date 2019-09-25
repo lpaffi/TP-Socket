@@ -60,8 +60,6 @@ public class EchoClient {
         clientWriteThread.start();
         clientReadThread.start();
 
-        while (true) {
-        }
     }
 }
 
