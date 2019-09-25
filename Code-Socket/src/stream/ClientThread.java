@@ -9,6 +9,7 @@ package stream;
 
 import domain.History;
 import domain.Message;
+import domain.SystemMessage;
 
 import java.io.IOException;
 import java.io.ObjectInputStream;
@@ -28,10 +29,6 @@ public class ClientThread
 
     private String socketId;
 
-    private final String EXIT_MESSAGE = "quit";
-
-    private final String QUIT_MESSAGE = "Disconnecting";
-
     ClientThread(Socket socket, HashMap<String, ObjectOutputStream> writers, History history) {
         this.clientSocket = socket;
         this.writers = writers;
@@ -47,7 +44,7 @@ public class ClientThread
 
     private void disconnectClient(Socket clientSocket) throws IOException {
         ObjectOutputStream clientQuitting = writers.get(socketId);
-        Message quitMessage = new Message("Server", QUIT_MESSAGE, new Date());
+        Message quitMessage = new Message("Server", SystemMessage.DISCONNECTED.toString(), new Date());
         clientQuitting.writeObject(quitMessage);
         writers.remove(socketId);
         clientSocket.close();
@@ -61,18 +58,18 @@ public class ClientThread
         try {
             ObjectInputStream objectInputStream = new ObjectInputStream(clientSocket.getInputStream());
 
-            System.out.println("Envoi historique de la discussion à "+clientSocket.toString());
+            System.out.println("Envoi historique de la discussion à " + clientSocket.toString());
             ObjectOutputStream objectOutputStream = new ObjectOutputStream(clientSocket.getOutputStream());
             objectOutputStream.writeObject(history.getMessageList());
-            writers.put(socketId ,objectOutputStream);
+            writers.put(socketId, objectOutputStream);
 
             while (true) {
                 Message clientMessage = (Message) objectInputStream.readObject();
                 history.addMessage(clientMessage);
                 System.out.println(clientMessage.toString());
-                if (clientMessage.getContent().equals(EXIT_MESSAGE)) {
+                if (clientMessage.getContent().equals(SystemMessage.QUIT.toString())) {
                     disconnectClient(clientSocket);
-                    Message clientDisconnectedMessage = new Message("Server", clientMessage.getUsername()+" disconnected", new Date());
+                    Message clientDisconnectedMessage = new Message("Server", clientMessage.getUsername() + " s'est deconnecté", new Date());
                     broadcastMessage(clientDisconnectedMessage);
                     break;
                 } else {

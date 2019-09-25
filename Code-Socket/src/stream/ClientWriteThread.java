@@ -2,6 +2,7 @@ package stream;
 
 
 import domain.Message;
+import domain.SystemMessage;
 import domain.User;
 
 import java.io.BufferedReader;
@@ -15,8 +16,6 @@ public class ClientWriteThread extends Thread {
     ObjectOutputStream objectOutputStream;
 
     User user;
-
-    private final String EXIT_MESSAGE = "quit";
 
     public ClientWriteThread(ObjectOutputStream objectOutputStream, User user) {
         this.objectOutputStream = objectOutputStream;
@@ -37,7 +36,7 @@ public class ClientWriteThread extends Thread {
             Message message = new Message(user.getName(), line, new Date());
             try {
                 objectOutputStream.writeObject(message);
-                if (message.getContent().equals(EXIT_MESSAGE)) {
+                if (message.getContent().equals(SystemMessage.QUIT.toString())) {
                     this.stop();
                 }
             } catch (IOException e) {

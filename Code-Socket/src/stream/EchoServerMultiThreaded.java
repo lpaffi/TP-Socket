@@ -7,14 +7,12 @@
 
 package stream;
 
-import domain.Conversation;
 import domain.History;
 
-import java.io.*;
-import java.net.*;
-import java.util.ArrayList;
+import java.io.ObjectOutputStream;
+import java.net.ServerSocket;
+import java.net.Socket;
 import java.util.HashMap;
-import java.util.List;
 
 public class EchoServerMultiThreaded {
 
@@ -24,7 +22,6 @@ public class EchoServerMultiThreaded {
      * @param EchoServer port
      **/
     public static void main(String args[]) {
-
         ServerSocket listenSocket;
 
         HashMap<String, ObjectOutputStream> writers = new HashMap<>();
@@ -41,10 +38,6 @@ public class EchoServerMultiThreaded {
             System.out.println("Server ready...");
             while (true) {
                 Socket clientSocket = listenSocket.accept(); // new client socket created
-                String socketId = clientSocket.getInetAddress().toString()+":"+clientSocket.getPort();
-                System.out.println(socketId);
-
-                //writers.put(socketId ,new ObjectOutputStream(clientSocket.getOutputStream()));
 
                 System.out.println("Connexion from: " + clientSocket.getInetAddress().toString());
 

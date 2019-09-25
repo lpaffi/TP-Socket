@@ -6,21 +6,23 @@
  */
 package stream;
 
-import domain.Message;
+import domain.SystemMessage;
 import domain.User;
 
 import java.io.*;
-import java.net.*;
-import java.util.Date;
-
+import java.net.Socket;
+import java.net.UnknownHostException;
 
 public class EchoClient {
 
+    /**
+     * @param ipAdress = args[0]
+     * @param port     = args[1]
+     * @param stdIn
+     * @throws IOException
+     */
     private static void join(String ipAdress, int port, BufferedReader stdIn) throws IOException {
-        // args[0] args[1]
-
         Socket clientToServerSocket = null;
-
 
         try {
             // creation socket ==> connexion
@@ -41,7 +43,7 @@ public class EchoClient {
 
         System.out.println("Bienvenue à la salle de conversation, " + name + " !");
 
-        System.out.println("Pour quitter la conversation, il suffit d'envoyer le message  'quit' ");
+        System.out.println("Pour quitter la conversation, il suffit d'envoyer le message "+ SystemMessage.QUIT.toString());
 
         User user = new User();
         user.setName(name);
@@ -50,8 +52,9 @@ public class EchoClient {
         ClientReadThread clientReadThread = new ClientReadThread(new ObjectInputStream(clientToServerSocket.getInputStream()));
         clientWriteThread.start();
         clientReadThread.start();
-        while(clientReadThread.isAlive() && clientWriteThread.isAlive()) {
+        while (clientReadThread.isAlive() && clientWriteThread.isAlive()) {
         }
+        System.out.println("Vous êtes deconnecté");
     }
 
     /**
@@ -66,11 +69,11 @@ public class EchoClient {
         }
 
         BufferedReader stdIn = new BufferedReader(new InputStreamReader(System.in));
-        while (true){
-            System.out.println("Pour rejoindre, entrez : join");
+        while (true) {
+            System.out.println("Pour rejoindre, entrez : " + SystemMessage.JOIN.toString());
             String option = stdIn.readLine();
 
-            if (option.equals("join")){
+            if (option.equals(SystemMessage.JOIN.toString())) {
                 join(args[0], new Integer(args[1]).intValue(), stdIn);
 
             }
