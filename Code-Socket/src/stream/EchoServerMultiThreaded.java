@@ -44,11 +44,11 @@ public class EchoServerMultiThreaded {
                 String socketId = clientSocket.getInetAddress().toString()+":"+clientSocket.getPort();
                 System.out.println(socketId);
 
-                writers.put(socketId ,new ObjectOutputStream(clientSocket.getOutputStream()));
+                //writers.put(socketId ,new ObjectOutputStream(clientSocket.getOutputStream()));
 
                 System.out.println("Connexion from: " + clientSocket.getInetAddress().toString());
 
-                ClientThread ct = new ClientThread(clientSocket, writers);
+                ClientThread ct = new ClientThread(clientSocket, writers, history);
                 ct.start();
             }
         } catch (Exception e) {

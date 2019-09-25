@@ -1,6 +1,7 @@
 package domain;
 
 import java.io.Serializable;
+import java.text.SimpleDateFormat;
 import java.util.Date;
 
 public class Message implements Serializable {
@@ -45,6 +46,6 @@ public class Message implements Serializable {
 
     @Override
     public String toString() {
-        return "[ "+username+" ]: "+content;
+        return "[ "+username+" à "+new SimpleDateFormat("hh:mm:ss dd-M-yyyy").format(date) +" ]: "+content;
     }
 }

@@ -1,9 +1,10 @@
 package domain;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
-public class History {
+public class History implements Serializable {
 
     List<Message> messageList = new ArrayList<>();
 

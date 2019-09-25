@@ -7,6 +7,7 @@
 
 package stream;
 
+import domain.History;
 import domain.Message;
 
 import java.io.IOException;
@@ -23,13 +24,19 @@ public class ClientThread
 
     private HashMap<String, ObjectOutputStream> writers;
 
+    private History history;
+
+    private String socketId;
+
     private final String EXIT_MESSAGE = "quit";
 
     private final String QUIT_MESSAGE = "Disconnecting";
 
-    ClientThread(Socket socket, HashMap<String, ObjectOutputStream> writers) {
+    ClientThread(Socket socket, HashMap<String, ObjectOutputStream> writers, History history) {
         this.clientSocket = socket;
         this.writers = writers;
+        this.history = history;
+        this.socketId = clientSocket.getInetAddress().toString() + ":" + clientSocket.getPort();
     }
 
     private void broadcastMessage(Message message) throws IOException {
@@ -39,7 +46,6 @@ public class ClientThread
     }
 
     private void disconnectClient(Socket clientSocket) throws IOException {
-        String socketId = clientSocket.getInetAddress().toString() + ":" + clientSocket.getPort();
         ObjectOutputStream clientQuitting = writers.get(socketId);
         Message quitMessage = new Message("Server", QUIT_MESSAGE, new Date());
         clientQuitting.writeObject(quitMessage);
@@ -54,8 +60,15 @@ public class ClientThread
         System.out.println("Running Client Thread");
         try {
             ObjectInputStream objectInputStream = new ObjectInputStream(clientSocket.getInputStream());
+
+            System.out.println("Envoi historique de la discussion à "+clientSocket.toString());
+            ObjectOutputStream objectOutputStream = new ObjectOutputStream(clientSocket.getOutputStream());
+            objectOutputStream.writeObject(history.getMessageList());
+            writers.put(socketId ,objectOutputStream);
+
             while (true) {
                 Message clientMessage = (Message) objectInputStream.readObject();
+                history.addMessage(clientMessage);
                 System.out.println(clientMessage.toString());
                 if (clientMessage.getContent().equals(EXIT_MESSAGE)) {
                     disconnectClient(clientSocket);
