@@ -38,6 +38,15 @@ public class ClientThread
         }
     }
 
+    private void disconnectClient(Socket clientSocket) throws IOException {
+        String socketId = clientSocket.getInetAddress().toString() + ":" + clientSocket.getPort();
+        ObjectOutputStream clientQuitting = writers.get(socketId);
+        Message quitMessage = new Message("Server", QUIT_MESSAGE, new Date());
+        clientQuitting.writeObject(quitMessage);
+        writers.remove(socketId);
+        clientSocket.close();
+    }
+
     /**
      * receives a request from client then sends an echo to the client
      **/
@@ -49,12 +58,9 @@ public class ClientThread
                 Message clientMessage = (Message) objectInputStream.readObject();
                 System.out.println(clientMessage.toString());
                 if (clientMessage.getContent().equals(EXIT_MESSAGE)) {
-                    String socketId = clientSocket.getInetAddress().toString() + ":" + clientSocket.getPort();
-                    ObjectOutputStream clientQuitting = writers.get(socketId);
-                    Message quitMessage = new Message("Server", QUIT_MESSAGE, new Date());
-                    clientQuitting.writeObject(quitMessage);
-                    writers.remove(socketId);
-                    clientSocket.close();
+                    disconnectClient(clientSocket);
+                    Message clientDisconnectedMessage = new Message("Server", clientMessage.getUsername()+" disconnected", new Date());
+                    broadcastMessage(clientDisconnectedMessage);
                     break;
                 } else {
                     broadcastMessage(clientMessage);
