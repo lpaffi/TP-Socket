@@ -13,6 +13,7 @@ import domain.History;
 import java.io.*;
 import java.net.*;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 public class EchoServerMultiThreaded {
@@ -26,7 +27,7 @@ public class EchoServerMultiThreaded {
 
         ServerSocket listenSocket;
 
-        List<ObjectOutputStream> writers = new ArrayList<>();
+        HashMap<String, ObjectOutputStream> writers = new HashMap<>();
 
         History history = new History();
 
@@ -40,7 +41,10 @@ public class EchoServerMultiThreaded {
             System.out.println("Server ready...");
             while (true) {
                 Socket clientSocket = listenSocket.accept(); // new client socket created
-                writers.add(new ObjectOutputStream(clientSocket.getOutputStream()));
+                String socketId = clientSocket.getInetAddress().toString()+":"+clientSocket.getPort();
+                System.out.println(socketId);
+
+                writers.put(socketId ,new ObjectOutputStream(clientSocket.getOutputStream()));
 
                 System.out.println("Connexion from: " + clientSocket.getInetAddress().toString());
 

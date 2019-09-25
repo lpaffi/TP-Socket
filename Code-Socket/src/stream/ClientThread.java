@@ -15,6 +15,7 @@ import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.net.Socket;
+import java.util.HashMap;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -23,15 +24,15 @@ public class ClientThread
 
     private Socket clientSocket;
 
-    private List<ObjectOutputStream> writers;
+    private HashMap<String, ObjectOutputStream> writers;
 
-    ClientThread(Socket socket, List<ObjectOutputStream> writers) {
+    ClientThread(Socket socket, HashMap<String, ObjectOutputStream> writers) {
         this.clientSocket = socket;
         this.writers = writers;
     }
 
     private void broadcastMessage(Message message) throws IOException {
-        for (ObjectOutputStream writer : writers) {
+        for (ObjectOutputStream writer : writers.values()) {
             writer.writeObject(message);
         }
     }

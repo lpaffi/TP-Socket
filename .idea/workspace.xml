@@ -3,10 +3,16 @@
   <component name="ChangeListManager">
     <list default="true" id="146a5a6a-9a9c-4826-9ea9-e72e6c59b9e0" name="Default Changelist" comment="">
       <change beforePath="$PROJECT_DIR$/../TP DASI/.idea/test.puml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Code-Socket/src/stream/ClientReadThread.java" beforeDir="false" afterPath="$PROJECT_DIR$/Code-Socket/src/stream/ClientReadThread.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Code-Socket/src/domain/User.java" beforeDir="false" afterPath="$PROJECT_DIR$/Code-Socket/src/domain/User.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Code-Socket/src/stream/ClientThread.java" beforeDir="false" afterPath="$PROJECT_DIR$/Code-Socket/src/stream/ClientThread.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Code-Socket/src/stream/ClientWriteThread.java" beforeDir="false" afterPath="$PROJECT_DIR$/Code-Socket/src/stream/ClientWriteThread.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Code-Socket/src/stream/EchoClient.java" beforeDir="false" afterPath="$PROJECT_DIR$/Code-Socket/src/stream/EchoClient.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Code-Socket/src/stream/EchoServerMultiThreaded.java" beforeDir="false" afterPath="$PROJECT_DIR$/Code-Socket/src/stream/EchoServerMultiThreaded.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/Code-Socket/domain/User.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/Code-Socket/domain/User.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/Code-Socket/stream/ClientReadThread.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/Code-Socket/stream/ClientReadThread.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/Code-Socket/stream/ClientThread.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/Code-Socket/stream/ClientThread.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/Code-Socket/stream/ClientWriteThread.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/Code-Socket/stream/ClientWriteThread.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/Code-Socket/stream/EchoClient.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/Code-Socket/stream/EchoClient.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/Code-Socket/stream/EchoServerMultiThreaded.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/Code-Socket/stream/EchoServerMultiThreaded.class" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/../microsservices/.idea/vcs.xml" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/../restful-web-services/src/main/java/com/learnmicroservices/restfulwebservices/Exception/UserNotCreatedException.java" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/../restful-web-services/src/main/java/com/learnmicroservices/restfulwebservices/Exception/UserNotFoundException.java" beforeDir="false" />
@@ -24,8 +30,8 @@
       <file pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/Code-Socket/src/stream/EchoClient.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="195">
-              <caret line="23" column="61" selection-start-line="23" selection-start-column="61" selection-end-line="23" selection-end-column="61" />
+            <state relative-caret-position="201">
+              <caret line="42" column="20" lean-forward="true" selection-start-line="42" selection-start-column="20" selection-end-line="42" selection-end-column="20" />
             </state>
           </provider>
         </entry>
@@ -33,8 +39,8 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/Code-Socket/src/stream/EchoServerMultiThreaded.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="157">
-              <caret line="27" lean-forward="true" selection-start-line="27" selection-end-line="27" />
+            <state relative-caret-position="159">
+              <caret line="28" lean-forward="true" selection-start-line="28" selection-end-line="28" />
               <folding>
                 <element signature="n#!!doc" expanded="true" />
                 <element signature="imports" expanded="true" />
@@ -46,8 +52,8 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/Code-Socket/src/stream/ClientThread.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="126">
-              <caret line="28" column="34" selection-start-line="28" selection-start-column="34" selection-end-line="28" selection-end-column="34" />
+            <state relative-caret-position="201">
+              <caret line="34" column="57" selection-start-line="34" selection-start-column="57" selection-end-line="34" selection-end-column="57" />
               <folding>
                 <element signature="n#!!doc" expanded="true" />
                 <element signature="imports" expanded="true" />
@@ -59,12 +65,10 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/Code-Socket/src/stream/ClientReadThread.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="375">
-              <caret line="25" column="13" lean-forward="true" selection-start-line="25" selection-start-column="13" selection-end-line="25" selection-end-column="13" />
+            <state relative-caret-position="210">
+              <caret line="16" column="42" selection-start-line="16" selection-start-column="36" selection-end-line="16" selection-end-column="42" />
               <folding>
                 <element signature="imports" expanded="true" />
-                <element signature="e#291#292#0" expanded="true" />
-                <element signature="e#353#354#0" expanded="true" />
               </folding>
             </state>
           </provider>
@@ -73,8 +77,8 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/Code-Socket/src/stream/ClientWriteThread.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="501">
-              <caret line="39" column="36" selection-start-line="39" selection-start-column="36" selection-end-line="39" selection-end-column="36" />
+            <state relative-caret-position="107">
+              <caret line="23" column="23" lean-forward="true" selection-start-line="23" selection-start-column="23" selection-end-line="23" selection-end-column="23" />
               <folding>
                 <element signature="imports" expanded="true" />
               </folding>
@@ -118,18 +122,18 @@
         <option value="$PROJECT_DIR$/Code-Socket/src/stream/Conversation.java" />
         <option value="$PROJECT_DIR$/Code-Socket/src/stream/Message.java" />
         <option value="$PROJECT_DIR$/Code-Socket/src/stream/User.java" />
-        <option value="$PROJECT_DIR$/Code-Socket/src/domain/User.java" />
         <option value="$PROJECT_DIR$/Code-Socket/src/domain/Message.java" />
         <option value="$PROJECT_DIR$/Code-Socket/src/stream/MultiCastServer.java" />
         <option value="$PROJECT_DIR$/Code-Socket/src/stream/ChatServer.java" />
         <option value="$PROJECT_DIR$/Code-Socket/src/stream/ListenSocket.java" />
         <option value="$PROJECT_DIR$/Code-Socket/src/domain/Conversation.java" />
-        <option value="$PROJECT_DIR$/Code-Socket/src/stream/EchoServerMultiThreaded.java" />
         <option value="$PROJECT_DIR$/Code-Socket/src/domain/History.java" />
-        <option value="$PROJECT_DIR$/Code-Socket/src/stream/ClientWriteThread.java" />
         <option value="$PROJECT_DIR$/Code-Socket/src/stream/ClientReadThread.java" />
-        <option value="$PROJECT_DIR$/Code-Socket/src/stream/ClientThread.java" />
         <option value="$PROJECT_DIR$/Code-Socket/src/stream/EchoClient.java" />
+        <option value="$PROJECT_DIR$/Code-Socket/src/stream/ClientWriteThread.java" />
+        <option value="$PROJECT_DIR$/Code-Socket/src/domain/User.java" />
+        <option value="$PROJECT_DIR$/Code-Socket/src/stream/ClientThread.java" />
+        <option value="$PROJECT_DIR$/Code-Socket/src/stream/EchoServerMultiThreaded.java" />
       </list>
     </option>
   </component>
@@ -144,7 +148,6 @@
       <foldersAlwaysOnTop value="true" />
     </navigator>
     <panes>
-      <pane id="PackagesPane" />
       <pane id="ProjectPane">
         <subPane>
           <expand>
@@ -173,13 +176,14 @@
           <select />
         </subPane>
       </pane>
+      <pane id="PackagesPane" />
       <pane id="Scope" />
     </panes>
   </component>
   <component name="PropertiesComponent">
     <property name="WebServerToolWindowFactoryState" value="false" />
     <property name="aspect.path.notification.shown" value="true" />
-    <property name="com.android.tools.idea.instantapp.provision.ProvisionBeforeRunTaskProvider.myTimeStamp" value="1569350087029" />
+    <property name="com.android.tools.idea.instantapp.provision.ProvisionBeforeRunTaskProvider.myTimeStamp" value="1569394923881" />
     <property name="nodejs_interpreter_path.stuck_in_default_project" value="undefined stuck path" />
     <property name="nodejs_npm_path_reset_for_default_project" value="true" />
     <property name="project.structure.last.edited" value="Project" />
@@ -320,18 +324,19 @@
       <workItem from="1569074756086" duration="651000" />
       <workItem from="1569225710004" duration="438000" />
       <workItem from="1569250783527" duration="7698000" />
-      <workItem from="1569326618746" duration="12204000" />
+      <workItem from="1569326618746" duration="12373000" />
+      <workItem from="1569391298136" duration="3617000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="27457000" />
+    <option name="totallyTimeSpent" value="31243000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="0" y="23" width="1440" height="805" extended-state="0" />
     <editor active="true" />
     <layout>
-      <window_info active="true" content_ui="combo" id="Project" order="0" visible="true" weight="0.16452074" />
+      <window_info content_ui="combo" id="Project" order="0" visible="true" weight="0.16666667" />
       <window_info id="Structure" order="1" side_tool="true" weight="0.25" />
       <window_info id="Designer" order="2" />
       <window_info id="Image Layers" order="3" />
@@ -340,12 +345,12 @@
       <window_info id="Favorites" order="6" side_tool="true" />
       <window_info anchor="bottom" id="Message" order="0" />
       <window_info anchor="bottom" id="Find" order="1" weight="0.3286908" />
-      <window_info anchor="bottom" id="Run" order="2" weight="0.33239833" />
+      <window_info anchor="bottom" id="Run" order="2" weight="0.33520338" />
       <window_info anchor="bottom" id="Debug" order="3" weight="0.3997195" />
       <window_info anchor="bottom" id="Cvs" order="4" weight="0.25" />
       <window_info anchor="bottom" id="Inspection" order="5" weight="0.4" />
       <window_info anchor="bottom" id="TODO" order="6" />
-      <window_info anchor="bottom" id="Terminal" order="7" />
+      <window_info anchor="bottom" id="Terminal" order="7" weight="0.32959327" />
       <window_info anchor="bottom" id="Docker" order="8" show_stripe_button="false" />
       <window_info anchor="bottom" id="Event Log" order="9" side_tool="true" />
       <window_info anchor="bottom" id="Messages" order="10" weight="0.3253857" />
@@ -475,16 +480,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/Code-Socket/src/domain/User.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="77">
-          <caret line="6" column="13" selection-start-line="6" selection-start-column="13" selection-end-line="6" selection-end-column="13" />
-          <folding>
-            <element signature="imports" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/Code-Socket/src/domain/History.java">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="195">
@@ -503,10 +498,40 @@
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/Code-Socket/src/domain/User.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="191">
+          <caret line="64" column="18" selection-start-line="64" selection-start-column="18" selection-end-line="64" selection-end-column="18" />
+          <folding>
+            <element signature="imports" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/Code-Socket/src/stream/ClientWriteThread.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="107">
+          <caret line="23" column="23" lean-forward="true" selection-start-line="23" selection-start-column="23" selection-end-line="23" selection-end-column="23" />
+          <folding>
+            <element signature="imports" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/Code-Socket/src/stream/ClientReadThread.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="210">
+          <caret line="16" column="42" selection-start-line="16" selection-start-column="36" selection-end-line="16" selection-end-column="42" />
+          <folding>
+            <element signature="imports" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/Code-Socket/src/stream/ClientThread.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="126">
-          <caret line="28" column="34" selection-start-line="28" selection-start-column="34" selection-end-line="28" selection-end-column="34" />
+        <state relative-caret-position="201">
+          <caret line="34" column="57" selection-start-line="34" selection-start-column="57" selection-end-line="34" selection-end-column="57" />
           <folding>
             <element signature="n#!!doc" expanded="true" />
             <element signature="imports" expanded="true" />
@@ -516,8 +541,8 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/Code-Socket/src/stream/EchoServerMultiThreaded.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="157">
-          <caret line="27" lean-forward="true" selection-start-line="27" selection-end-line="27" />
+        <state relative-caret-position="159">
+          <caret line="28" lean-forward="true" selection-start-line="28" selection-end-line="28" />
           <folding>
             <element signature="n#!!doc" expanded="true" />
             <element signature="imports" expanded="true" />
@@ -525,32 +550,10 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/Code-Socket/src/stream/ClientReadThread.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="375">
-          <caret line="25" column="13" lean-forward="true" selection-start-line="25" selection-start-column="13" selection-end-line="25" selection-end-column="13" />
-          <folding>
-            <element signature="imports" expanded="true" />
-            <element signature="e#291#292#0" expanded="true" />
-            <element signature="e#353#354#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/Code-Socket/src/stream/ClientWriteThread.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="501">
-          <caret line="39" column="36" selection-start-line="39" selection-start-column="36" selection-end-line="39" selection-end-column="36" />
-          <folding>
-            <element signature="imports" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/Code-Socket/src/stream/EchoClient.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="195">
-          <caret line="23" column="61" selection-start-line="23" selection-start-column="61" selection-end-line="23" selection-end-column="61" />
+        <state relative-caret-position="201">
+          <caret line="42" column="20" lean-forward="true" selection-start-line="42" selection-start-column="20" selection-end-line="42" selection-end-column="20" />
         </state>
       </provider>
     </entry>

@@ -1,10 +1,11 @@
 package domain;
 
+import java.io.Serializable;
 import java.net.InetAddress;
 import java.util.List;
 import java.util.Objects;
 
-public class User {
+public class User implements Serializable {
 
     private String name;
 
@@ -58,5 +59,14 @@ public class User {
     @Override
     public int hashCode() {
         return Objects.hash(name, inetAddress, conversationsList);
+    }
+
+    @Override
+    public String toString() {
+        return "User{" +
+                "name='" + name + '\'' +
+                ", inetAddress=" + inetAddress +
+                ", conversationsList=" + conversationsList +
+                '}';
     }
 }
