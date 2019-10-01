@@ -9,6 +9,8 @@ package Server;
 
 import domain.History;
 
+import java.io.File;
+import java.io.IOException;
 import java.io.ObjectOutputStream;
 import java.net.ServerSocket;
 import java.net.Socket;
@@ -19,7 +21,6 @@ public class EchoServerMultiThreaded {
     /**
      * main method
      *
-     * @param EchoServer port
      **/
     public static void main(String args[]) {
         ServerSocket listenSocket;
@@ -31,6 +32,16 @@ public class EchoServerMultiThreaded {
         if (args.length != 1) {
             System.out.println("Usage: java EchoServer <EchoServer port>");
             System.exit(1);
+        }
+
+        File f = new File("history.txt");
+        if(!f.isFile()) {
+            try{
+                f.createNewFile();
+            }
+            catch (IOException e){
+                System.out.println("Impossible to get persistant history");
+            }
         }
 
         try {
