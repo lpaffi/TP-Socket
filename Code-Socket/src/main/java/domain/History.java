@@ -32,10 +32,7 @@ public class History implements Serializable {
             while(line != null) {
                 String[] splits = line.split("_:_");
 
-                System.out.println(splits.length);
-
                 time = splits[0];
-                System.out.println(time);
                 DateFormat format = DateFormat.getDateInstance(DateFormat.LONG, Locale.FRENCH);
                 Date date = format.parse(time);
 

@@ -65,7 +65,6 @@ public class ClientThread
 
             while (true) {
                 Message clientMessage = (Message) objectInputStream.readObject();
-                history.addMessage(clientMessage);
                 System.out.println(clientMessage.toString());
                 if (clientMessage.getContent().equals(SystemMessage.QUIT.toString())) {
                     disconnectClient(clientSocket);
@@ -73,6 +72,7 @@ public class ClientThread
                     broadcastMessage(clientDisconnectedMessage);
                     break;
                 } else {
+                    history.addMessage(clientMessage);
                     broadcastMessage(clientMessage);
                 }
             }
