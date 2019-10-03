@@ -1,13 +1,12 @@
 package Client;
 
+import Client.Util.ByteSerializationUtil;
 import domain.Message;
 import domain.MulticastRoom;
 import domain.SystemMessage;
 
 import java.io.*;
-import java.net.DatagramPacket;
-import java.net.InetAddress;
-import java.net.MulticastSocket;
+import java.net.*;
 
 public class ClientReadThread extends Thread {
 
@@ -18,18 +17,6 @@ public class ClientReadThread extends Thread {
     public ClientReadThread(MulticastRoom multicastRoom, ObjectInputStream objectInputStream) {
         this.objectInputStream = objectInputStream;
         this.multicastRoom = multicastRoom;
-    }
-
-    public static byte[] serialize(Object obj) throws IOException {
-        ByteArrayOutputStream out = new ByteArrayOutputStream();
-        ObjectOutputStream os = new ObjectOutputStream(out);
-        os.writeObject(obj);
-        return out.toByteArray();
-    }
-    public static Object deserialize(byte[] data) throws IOException, ClassNotFoundException {
-        ByteArrayInputStream in = new ByteArrayInputStream(data);
-        ObjectInputStream is = new ObjectInputStream(in);
-        return is.readObject();
     }
 
     public void run() {
@@ -47,30 +34,27 @@ public class ClientReadThread extends Thread {
             MulticastSocket multicastSocket = new MulticastSocket(multicastRoom.getPort());
             multicastRoom.setMulticastSocket(multicastSocket);
 
-            System.out.println("multicast room = " +multicastRoom.toString());
             multicastRoom.getHistory().getMessageList().forEach(message -> System.out.println(message.toString()));
-            multicastSocket.joinGroup(multicastRoom.getIpAddress());
-            System.out.println("multicast socket port 2 = "+multicastSocket.getPort());
-            System.out.println(multicastRoom.getMulticastSocket().getPort());
+            //multicastSocket.joinGroup(multicastRoom.getIpAddress());
+            //ligne mysteriuse que fait le code marcher sur mon mac(????)
+            multicastSocket.joinGroup(new InetSocketAddress(multicastRoom.getIpAddress(), multicastRoom.getPort()), NetworkInterface.getByName("p2p0"));
+
+            while (true) {
+                try {
+                    multicastSocket.receive(recv);
+                    Message serverMessage = (Message) ByteSerializationUtil.deserialize(recv.getData());
+                    if (serverMessage.getContent().equals(SystemMessage.DISCONNECTED.toString())) {
+                        multicastSocket.leaveGroup(multicastSocket.getInetAddress());
+                        this.stop();
+                    }
+                    System.out.println(serverMessage.toString());
+                } catch (IOException | ClassNotFoundException e) {
+                    e.printStackTrace();
+                }
+            }
+
         } catch (IOException | ClassNotFoundException e) {
             e.printStackTrace();
-        }
-        while (true) {
-            MulticastSocket multicastSocket = multicastRoom.getMulticastSocket();
-            System.out.println("test");
-            try {
-                System.out.println("socket port = "+multicastSocket.getPort());
-                multicastSocket.receive(recv);
-                System.out.println("socket port = "+multicastSocket.getPort());
-                Message serverMessage = (Message) deserialize(recv.getData()) ;
-                if (serverMessage.getContent().equals(SystemMessage.DISCONNECTED.toString())) {
-                    multicastSocket.leaveGroup(multicastSocket.getInetAddress());
-                    this.stop();
-                }
-                System.out.println(serverMessage.toString());
-            } catch (IOException | ClassNotFoundException e) {
-                e.printStackTrace();
-            }
         }
     }
 }

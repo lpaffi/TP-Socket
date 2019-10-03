@@ -11,7 +11,6 @@ import domain.SystemMessage;
 import domain.User;
 
 import java.io.*;
-import java.net.MulticastSocket;
 import java.net.Socket;
 import java.net.UnknownHostException;
 
@@ -46,15 +45,16 @@ public class EchoClient {
 
         System.out.println("Bienvenue à la salle de conversation, " + name + " !");
 
-        System.out.println("Pour quitter la conversation, il suffit d'envoyer le message "+ SystemMessage.QUIT.toString());
+        System.out.println("Pour quitter la conversation, il suffit d'envoyer le message " + SystemMessage.QUIT.toString());
 
         User user = new User();
         user.setName(name);
 
-        ClientWriteThread clientWriteThread = new ClientWriteThread(multicastRoom, new ObjectOutputStream(clientToServerSocket.getOutputStream()), user);
-        ClientReadThread clientReadThread = new ClientReadThread(multicastRoom,  new ObjectInputStream(clientToServerSocket.getInputStream()));
+        ClientWriteThread clientWriteThread = new ClientWriteThread(multicastRoom, user);
+        ClientReadThread clientReadThread = new ClientReadThread(multicastRoom, new ObjectInputStream(clientToServerSocket.getInputStream()));
         clientWriteThread.start();
         clientReadThread.start();
+
         while (clientReadThread.isAlive() && clientWriteThread.isAlive()) {
         }
         System.out.println("Vous êtes deconnecté");

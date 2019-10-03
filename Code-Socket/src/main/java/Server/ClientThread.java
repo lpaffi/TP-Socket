@@ -36,6 +36,10 @@ public class ClientThread
 
     private int port;
 
+    private static int MULTICAST_SERVER_PORT = 6789;
+
+    private static String MULTICAST_SERVER_ADDRESS = "228.5.6.7";
+
     ClientThread(Socket socket, HashMap<String, ObjectOutputStream> writers, History history) {
         this.clientSocket = socket;
         this.writers = writers;
@@ -43,17 +47,11 @@ public class ClientThread
         this.socketId = clientSocket.getInetAddress().toString() + ":" + clientSocket.getPort();
 
         try {
-            this.inetAdress = InetAddress.getByName("228.5.6.7");
+            this.inetAdress = InetAddress.getByName(MULTICAST_SERVER_ADDRESS);
         } catch (UnknownHostException e) {
             e.printStackTrace();
         }
-        this.port = 6789;
-    }
-
-    private void broadcastMessage(Message message) throws IOException {
-        for (ObjectOutputStream writer : writers.values()) {
-            writer.writeObject(message);
-        }
+        this.port = MULTICAST_SERVER_PORT;
     }
 
     private void disconnectClient(Socket clientSocket) throws IOException {
@@ -69,32 +67,16 @@ public class ClientThread
      **/
     public void run() {
         System.out.println("Running Client Thread");
-        //Send port, ip and history
+        //Send port, ip and history to the client
         MulticastRoom multicastRoom = new MulticastRoom();
         multicastRoom.setIpAddress(inetAdress);
         multicastRoom.setPort(port);
         multicastRoom.setHistory(history);
-        try {
-            ObjectInputStream objectInputStream = new ObjectInputStream(clientSocket.getInputStream());
 
+        try {
             System.out.println("Envoi multicastRoom" + clientSocket.toString());
             ObjectOutputStream objectOutputStream = new ObjectOutputStream(clientSocket.getOutputStream());
             objectOutputStream.writeObject(multicastRoom);
-            writers.put(socketId, objectOutputStream);
-
-            while (true) {
-                Message clientMessage = (Message) objectInputStream.readObject();
-                System.out.println(clientMessage.toString());
-                if (clientMessage.getContent().equals(SystemMessage.QUIT.toString())) {
-                    disconnectClient(clientSocket);
-                    Message clientDisconnectedMessage = new Message("Server", clientMessage.getUsername() + " s'est deconnecté", new Date());
-                    broadcastMessage(clientDisconnectedMessage);
-                    break;
-                } else {
-                    history.addMessage(clientMessage);
-                    broadcastMessage(clientMessage);
-                }
-            }
         } catch (Exception e) {
             System.err.println("Error in ClientThread:" + e);
             e.printStackTrace();

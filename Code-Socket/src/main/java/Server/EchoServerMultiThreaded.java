@@ -18,7 +18,6 @@ public class EchoServerMultiThreaded {
 
     /**
      * main method
-     *
      **/
     public static void main(String args[]) {
         ServerSocket listenSocket;
