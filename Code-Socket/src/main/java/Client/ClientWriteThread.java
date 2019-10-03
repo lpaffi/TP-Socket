@@ -22,6 +22,18 @@ public class ClientWriteThread extends Thread {
         this.user = user;
     }
 
+    public void sendMessage(Message message) {
+        System.out.println("sendMessage in ClientWriteThread");
+        try {
+            objectOutputStream.writeObject(message);
+            if (message.getContent().equals(SystemMessage.QUIT.toString())) {
+                this.stop();
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
     public void run() {
         System.out.println("Running Client Write Thread");
 
@@ -34,14 +46,7 @@ public class ClientWriteThread extends Thread {
                 e.printStackTrace();
             }
             Message message = new Message(user.getName(), line, new Date());
-            try {
-                objectOutputStream.writeObject(message);
-                if (message.getContent().equals(SystemMessage.QUIT.toString())) {
-                    this.stop();
-                }
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
+            sendMessage(message);
         }
     }
 }

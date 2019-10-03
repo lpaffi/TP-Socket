@@ -57,10 +57,12 @@ public class EchoClient {
         System.out.println("Vous êtes deconnecté");
     }
 
+
     /**
      * main method
      * accepts a connection, receives a message from client then sends an echo to the client
      **/
+
     public static void main(String[] args) throws IOException {
 
         if (args.length != 2) {
