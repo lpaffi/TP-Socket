@@ -2,14 +2,17 @@ package domain;
 
 import java.io.Serializable;
 import java.net.InetAddress;
+import java.net.MulticastSocket;
 
 public class MulticastRoom implements Serializable {
 
-    public int port;
+    private int port;
 
-    public InetAddress ipAddress;
+    private InetAddress ipAddress;
 
-    public History history;
+    private History history;
+
+    private MulticastSocket multicastSocket;
 
     public MulticastRoom() {
     }
@@ -38,12 +41,21 @@ public class MulticastRoom implements Serializable {
         this.history = history;
     }
 
+    public MulticastSocket getMulticastSocket() {
+        return multicastSocket;
+    }
+
+    public void setMulticastSocket(MulticastSocket multicastSocket) {
+        this.multicastSocket = multicastSocket;
+    }
+
     @Override
     public String toString() {
         return "MulticastRoom{" +
                 "port=" + port +
                 ", ipAddress=" + ipAddress +
                 ", history=" + history +
+                ", multicastSocket=" + multicastSocket +
                 '}';
     }
 }

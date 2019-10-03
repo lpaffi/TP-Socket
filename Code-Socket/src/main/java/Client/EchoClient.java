@@ -6,6 +6,7 @@
  */
 package Client;
 
+import domain.MulticastRoom;
 import domain.SystemMessage;
 import domain.User;
 
@@ -24,7 +25,7 @@ public class EchoClient {
      */
     private static void join(String ipAdress, int port, BufferedReader stdIn) throws IOException {
         Socket clientToServerSocket = null;
-        MulticastSocket multicastSocket = new MulticastSocket();
+        MulticastRoom multicastRoom = new MulticastRoom();
 
         try {
             // creation socket ==> connexion
@@ -50,8 +51,8 @@ public class EchoClient {
         User user = new User();
         user.setName(name);
 
-        ClientWriteThread clientWriteThread = new ClientWriteThread(multicastSocket, new ObjectOutputStream(clientToServerSocket.getOutputStream()), user);
-        ClientReadThread clientReadThread = new ClientReadThread(multicastSocket, new ObjectInputStream(clientToServerSocket.getInputStream()));
+        ClientWriteThread clientWriteThread = new ClientWriteThread(multicastRoom, new ObjectOutputStream(clientToServerSocket.getOutputStream()), user);
+        ClientReadThread clientReadThread = new ClientReadThread(multicastRoom,  new ObjectInputStream(clientToServerSocket.getInputStream()));
         clientWriteThread.start();
         clientReadThread.start();
         while (clientReadThread.isAlive() && clientWriteThread.isAlive()) {
