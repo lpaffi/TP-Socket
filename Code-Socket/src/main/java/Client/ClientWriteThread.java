@@ -24,6 +24,22 @@ public class ClientWriteThread extends Thread {
         this.multicastRoom = multicastRoom;
     }
 
+    private void sendMessage(Message message, DatagramSocket datagramSocket) throws IOException {
+        boolean shouldQuit = false;
+        if (message.getContent().equals(SystemMessage.QUIT.toString())) {
+            message.setContent(user.getName() + " s'est deconnecté");
+            shouldQuit = true;
+        }
+        byte[] serializedMessage = ByteSerializationUtil.serialize(message);
+        DatagramPacket datagramPacket = new DatagramPacket(serializedMessage, serializedMessage.length, multicastRoom.getIpAddress(), multicastRoom.getPort());
+        datagramSocket.send(datagramPacket);
+
+        if(shouldQuit) {
+            multicastRoom.getMulticastSocket().leaveGroup(multicastRoom.getIpAddress());
+            this.stop();
+        }
+    }
+
     public void run() {
         System.out.println("Running Client Write Thread");
         DatagramSocket datagramSocket = null;
@@ -42,12 +58,7 @@ public class ClientWriteThread extends Thread {
             }
             Message message = new Message(user.getName(), line, new Date());
             try {
-                byte[] serializedMessage = ByteSerializationUtil.serialize(message);
-                DatagramPacket datagramPacket = new DatagramPacket(serializedMessage, serializedMessage.length, multicastRoom.getIpAddress(), multicastRoom.getPort());
-                datagramSocket.send(datagramPacket);
-                if (message.getContent().equals(SystemMessage.QUIT.toString())) {
-                    this.stop();
-                }
+                sendMessage(message, datagramSocket);
             } catch (IOException e) {
                 e.printStackTrace();
             }
