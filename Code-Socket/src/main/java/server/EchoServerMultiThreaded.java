@@ -5,7 +5,7 @@
  * Authors:
  */
 
-package Server;
+package server;
 
 import domain.History;
 
@@ -40,7 +40,10 @@ public class EchoServerMultiThreaded {
                 System.out.println("Connexion from: " + clientSocket.getInetAddress().toString());
 
                 ClientThread ct = new ClientThread(clientSocket, writers, history);
+                DaemonThread daemonThread = new DaemonThread();
+
                 ct.start();
+                daemonThread.start();
             }
         } catch (Exception e) {
             System.err.println("Error in EchoServer:" + e);

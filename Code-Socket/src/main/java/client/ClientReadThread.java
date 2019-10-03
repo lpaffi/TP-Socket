@@ -1,6 +1,6 @@
-package Client;
+package client;
 
-import Client.Util.ByteSerializationUtil;
+import util.ByteSerializationUtil;
 import domain.Message;
 import domain.MulticastRoom;
 import domain.SystemMessage;

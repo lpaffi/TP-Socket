@@ -5,7 +5,7 @@
  * Authors:
  */
 
-package Server;
+package server;
 
 import domain.History;
 import domain.Message;
@@ -13,7 +13,6 @@ import domain.MulticastRoom;
 import domain.SystemMessage;
 
 import java.io.IOException;
-import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.net.InetAddress;
 import java.net.Socket;
@@ -52,14 +51,6 @@ public class ClientThread
             e.printStackTrace();
         }
         this.port = MULTICAST_SERVER_PORT;
-    }
-
-    private void disconnectClient(Socket clientSocket) throws IOException {
-        ObjectOutputStream clientQuitting = writers.get(socketId);
-        Message quitMessage = new Message("Server", SystemMessage.DISCONNECTED.toString(), new Date());
-        clientQuitting.writeObject(quitMessage);
-        writers.remove(socketId);
-        clientSocket.close();
     }
 
     /**

@@ -4,11 +4,12 @@
  * Date: 10/01/04
  * Authors:
  */
-package Client;
+package client;
 
 import domain.MulticastRoom;
 import domain.SystemMessage;
 import domain.User;
+import server.DaemonThread;
 
 import java.io.*;
 import java.net.Socket;
@@ -52,6 +53,7 @@ public class EchoClient {
 
         ClientWriteThread clientWriteThread = new ClientWriteThread(multicastRoom, user);
         ClientReadThread clientReadThread = new ClientReadThread(multicastRoom, new ObjectInputStream(clientToServerSocket.getInputStream()));
+
         clientWriteThread.start();
         clientReadThread.start();
 
