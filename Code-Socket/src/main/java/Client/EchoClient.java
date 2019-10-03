@@ -10,6 +10,7 @@ import domain.SystemMessage;
 import domain.User;
 
 import java.io.*;
+import java.net.MulticastSocket;
 import java.net.Socket;
 import java.net.UnknownHostException;
 
@@ -23,6 +24,7 @@ public class EchoClient {
      */
     private static void join(String ipAdress, int port, BufferedReader stdIn) throws IOException {
         Socket clientToServerSocket = null;
+        MulticastSocket multicastSocket = new MulticastSocket();
 
         try {
             // creation socket ==> connexion
@@ -48,8 +50,8 @@ public class EchoClient {
         User user = new User();
         user.setName(name);
 
-        ClientWriteThread clientWriteThread = new ClientWriteThread(new ObjectOutputStream(clientToServerSocket.getOutputStream()), user);
-        ClientReadThread clientReadThread = new ClientReadThread(new ObjectInputStream(clientToServerSocket.getInputStream()));
+        ClientWriteThread clientWriteThread = new ClientWriteThread(multicastSocket, new ObjectOutputStream(clientToServerSocket.getOutputStream()), user);
+        ClientReadThread clientReadThread = new ClientReadThread(multicastSocket, new ObjectInputStream(clientToServerSocket.getInputStream()));
         clientWriteThread.start();
         clientReadThread.start();
         while (clientReadThread.isAlive() && clientWriteThread.isAlive()) {

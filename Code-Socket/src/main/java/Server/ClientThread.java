@@ -9,12 +9,15 @@ package Server;
 
 import domain.History;
 import domain.Message;
+import domain.MulticastRoom;
 import domain.SystemMessage;
 
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
+import java.net.InetAddress;
 import java.net.Socket;
+import java.net.UnknownHostException;
 import java.util.Date;
 import java.util.HashMap;
 
@@ -29,11 +32,22 @@ public class ClientThread
 
     private String socketId;
 
+    private InetAddress inetAdress;
+
+    private int port;
+
     ClientThread(Socket socket, HashMap<String, ObjectOutputStream> writers, History history) {
         this.clientSocket = socket;
         this.writers = writers;
         this.history = history;
         this.socketId = clientSocket.getInetAddress().toString() + ":" + clientSocket.getPort();
+
+        try {
+            this.inetAdress = InetAddress.getByName("228.5.6.7");
+        } catch (UnknownHostException e) {
+            e.printStackTrace();
+        }
+        this.port = 6789;
     }
 
     private void broadcastMessage(Message message) throws IOException {
@@ -55,12 +69,17 @@ public class ClientThread
      **/
     public void run() {
         System.out.println("Running Client Thread");
+        //Send port, ip and history
+        MulticastRoom multicastRoom = new MulticastRoom();
+        multicastRoom.setIpAddress(inetAdress);
+        multicastRoom.setPort(port);
+        multicastRoom.setHistory(history);
         try {
             ObjectInputStream objectInputStream = new ObjectInputStream(clientSocket.getInputStream());
 
-            System.out.println("Envoi historique de la discussion à " + clientSocket.toString());
+            System.out.println("Envoi multicastRoom" + clientSocket.toString());
             ObjectOutputStream objectOutputStream = new ObjectOutputStream(clientSocket.getOutputStream());
-            objectOutputStream.writeObject(history.getMessageList());
+            objectOutputStream.writeObject(multicastRoom);
             writers.put(socketId, objectOutputStream);
 
             while (true) {

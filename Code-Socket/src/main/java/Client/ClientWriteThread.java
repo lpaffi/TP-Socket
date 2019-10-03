@@ -5,22 +5,37 @@ import domain.Message;
 import domain.SystemMessage;
 import domain.User;
 
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStreamReader;
-import java.io.ObjectOutputStream;
+import java.io.*;
+import java.net.DatagramPacket;
+import java.net.MulticastSocket;
 import java.util.Date;
 
 public class ClientWriteThread extends Thread {
 
-    ObjectOutputStream objectOutputStream;
+    private ObjectOutputStream objectOutputStream;
 
-    User user;
+    private User user;
 
-    public ClientWriteThread(ObjectOutputStream objectOutputStream, User user) {
+    private MulticastSocket multicastSocket;
+
+
+    public ClientWriteThread(MulticastSocket multicastSocket, ObjectOutputStream objectOutputStream, User user) {
         this.objectOutputStream = objectOutputStream;
         this.user = user;
+        this.multicastSocket = multicastSocket;
     }
+    public static byte[] serialize(Object obj) throws IOException {
+        ByteArrayOutputStream out = new ByteArrayOutputStream();
+        ObjectOutputStream os = new ObjectOutputStream(out);
+        os.writeObject(obj);
+        return out.toByteArray();
+    }
+    public static Object deserialize(byte[] data) throws IOException, ClassNotFoundException {
+        ByteArrayInputStream in = new ByteArrayInputStream(data);
+        ObjectInputStream is = new ObjectInputStream(in);
+        return is.readObject();
+    }
+
 
     public void run() {
         System.out.println("Running Client Write Thread");
@@ -35,7 +50,11 @@ public class ClientWriteThread extends Thread {
             }
             Message message = new Message(user.getName(), line, new Date());
             try {
-                objectOutputStream.writeObject(message);
+                byte[] serializedMessage = serialize(message);
+                System.out.println("Multicast socket = "+multicastSocket.toString());
+                DatagramPacket datagramPacket = new
+                        DatagramPacket(serializedMessage, serializedMessage.length, multicastSocket.getInetAddress(), multicastSocket.getPort());
+                multicastSocket.send(datagramPacket);
                 if (message.getContent().equals(SystemMessage.QUIT.toString())) {
                     this.stop();
                 }
