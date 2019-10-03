@@ -24,12 +24,13 @@ public class EchoServerMultiThreaded {
 
         HashMap<String, ObjectOutputStream> writers = new HashMap<>();
 
-        History history = new History();
-
         if (args.length != 1) {
             System.out.println("Usage: java EchoServer <EchoServer port>");
             System.exit(1);
         }
+
+        DaemonThread daemonThread = new DaemonThread();
+        daemonThread.start();
 
         try {
             listenSocket = new ServerSocket(Integer.parseInt(args[0])); //port
@@ -39,11 +40,10 @@ public class EchoServerMultiThreaded {
 
                 System.out.println("Connexion from: " + clientSocket.getInetAddress().toString());
 
-                ClientThread ct = new ClientThread(clientSocket, writers, history);
-                DaemonThread daemonThread = new DaemonThread();
+                History history = new History();
 
+                ClientThread ct = new ClientThread(clientSocket, writers, history);
                 ct.start();
-                daemonThread.start();
             }
         } catch (Exception e) {
             System.err.println("Error in EchoServer:" + e);

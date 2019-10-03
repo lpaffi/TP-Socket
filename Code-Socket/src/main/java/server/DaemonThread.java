@@ -1,5 +1,6 @@
 package server;
 
+import domain.History;
 import domain.Message;
 import domain.MulticastRoom;
 import domain.SystemMessage;
@@ -13,6 +14,12 @@ public class DaemonThread extends Thread {
     private static int MULTICAST_SERVER_PORT = 6789;
 
     private static String MULTICAST_SERVER_ADDRESS = "228.5.6.7";
+
+    private History history;
+
+    public DaemonThread() {
+        this.history = new History();
+    }
 
     public void run() {
         MulticastSocket multicastSocket = null;
@@ -35,6 +42,7 @@ public class DaemonThread extends Thread {
                     this.stop();
                 }
                 System.out.println("Daemon read message: "+incomingMessage.toString());
+                history.addMessage(incomingMessage);
             } catch (IOException | ClassNotFoundException e) {
                 e.printStackTrace();
             }
