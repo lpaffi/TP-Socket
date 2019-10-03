@@ -1,20 +1,16 @@
 package domain;
 
 import java.io.*;
-import java.text.DateFormat;
-import java.text.ParseException;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
-import java.util.Locale;
 
 public class History implements Serializable {
 
     private List<Message> messageList = new ArrayList<>();
     private static final String HISTORY_FILE = "history.txt";
 
-    public History() {
-        File f = new File("history.txt");
+    public History(){
+        File f = new File(HISTORY_FILE);
         if(!f.isFile()) {
             try{
                 f.createNewFile();
@@ -27,40 +23,52 @@ public class History implements Serializable {
         // load history from file
         String time, name, message;
 
-        try(BufferedReader bufferedReader = new BufferedReader(new FileReader(HISTORY_FILE))) {
-            String line = bufferedReader.readLine();
-            while(line != null) {
-                String[] splits = line.split("_:_");
+        if (f.length() != 0){
 
-                time = splits[0];
-                DateFormat format = DateFormat.getDateInstance(DateFormat.LONG, Locale.FRENCH);
-                Date date = format.parse(time);
+            try (FileInputStream fileInputStream = new FileInputStream(f);
+                 ObjectInputStream objectInputStream = new ObjectInputStream(fileInputStream)){
 
-                name = splits[1];
-                message = splits[2];
+                boolean keepReading = true;
+                try {
+                    // Read object
+                    this.messageList = (List<Message>) objectInputStream.readObject();
+                }catch(EOFException e) {
+                    keepReading = false;
+                }
 
-                messageList.add(new Message(name, message, date));
-
-                line = bufferedReader.readLine();
+            } catch (IOException | ClassNotFoundException e) {
+                e.printStackTrace();
             }
-        } catch (IOException | ParseException e) {
-            System.out.println("No history available");
-            System.err.println(e);
+
         }
-
-
     }
 
     public void addMessage(Message message) {
         this.messageList.add(message);
 
-        // write the message in file
-        try(BufferedWriter bufferedWriter = new BufferedWriter(new FileWriter(HISTORY_FILE, true))) {
-            DateFormat format = DateFormat.getDateInstance(DateFormat.LONG, Locale.FRENCH);
-            String dateStr = format.format(message.getDate());
-            bufferedWriter.write(dateStr + "_:_" + message.getUsername() + "_:_" + message.getContent() + "\n");
+//        // write the message in file
+//        try(BufferedWriter bufferedWriter = new BufferedWriter(new FileWriter(HISTORY_FILE, true))) {
+//            DateFormat format = DateFormat.getDateInstance(DateFormat.LONG, Locale.FRENCH);
+//            String dateStr = format.format(message.getDate());
+//            bufferedWriter.write(dateStr + "_:_" + message.getUsername() + "_:_" + message.getContent() + "\n");
+//        } catch (IOException e) {
+//            System.out.println("Error in message saving");
+//        }
+
+        try {
+            FileOutputStream fileOutputStream = new FileOutputStream(new File(HISTORY_FILE));
+            ObjectOutputStream objectOutputStream = new ObjectOutputStream(fileOutputStream);
+
+            // Write object to file
+            objectOutputStream.writeObject(messageList);
+
+            objectOutputStream.close();
+            fileOutputStream.close();
+
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
         } catch (IOException e) {
-            System.out.println("Error in message saving");
+            e.printStackTrace();
         }
     }
 
