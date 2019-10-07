@@ -4,13 +4,11 @@ import domain.Message;
 import domain.User;
 import javafx.application.Application;
 import javafx.geometry.Insets;
-import javafx.geometry.Pos;
 import javafx.scene.Scene;
-import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
-import javafx.scene.layout.GridPane;
+import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 
 import java.util.ArrayList;
@@ -38,29 +36,26 @@ public class ClientApplication extends Application {
     @Override
     public void start(Stage primaryStage) {
         // TODO Auto-generated method stub
-        threads = new ArrayList<Thread>();
+        threads = new ArrayList<>();
         primaryStage.setTitle("JavaFX Chat Client");
         primaryStage.setScene(makeInitScene(primaryStage));
         primaryStage.show();
     }
 
     public Scene makeInitScene(Stage primaryStage) {
-        /* Make the root pane and set properties */
-        GridPane rootPane = new GridPane();
-        rootPane.setPadding(new Insets(20));
-        rootPane.setVgap(10);
-        rootPane.setHgap(10);
-        rootPane.setAlignment(Pos.CENTER);
+        VBox vBox = new VBox();
+        vBox.setSpacing(10);
+        vBox.setPadding(new Insets(15, 20, 10, 10));
 
         /* Make the text fields and set properties */
         TextField nameField = new TextField();
-
         /* Make the labels and set properties */
-        Label nameLabel = new Label("Nom d'utilisateur ");
-        Label errorLabel = new Label();
-        /* Make the button and its handler */
-        Button submitClientInfoButton = new Button("Entrer");
-        submitClientInfoButton.setOnAction(event -> {
+        Label nameLabel = new Label("Quel est votre nom d'utilisateur?");
+        Label infoLabel = new Label("Appuyez sur Entrer pour rejoindre la conversation");
+        vBox.getChildren().addAll(nameLabel, nameField, infoLabel);
+
+        /* Add handler to textfield */
+        nameField.setOnAction(event -> {
             String clientName = nameField.getText();
             User client = new User();
             client.setName(clientName);
@@ -70,34 +65,24 @@ public class ClientApplication extends Application {
             primaryStage.setScene(makeChatUI(client));
             primaryStage.show();
         });
-
-        /*
-         * Add the components to the root pane arguments are (Node, Column
-         * Number, Row Number)
-         */
-        rootPane.add(nameField, 1, 0);
-        rootPane.add(nameLabel, 0, 0);
-        rootPane.add(submitClientInfoButton, 0, 3, 2, 1);
-        rootPane.add(errorLabel, 0, 4);
-        /* Make the Scene and return it */
-        return new Scene(rootPane, 400, 400);
+        Scene scene = new Scene(vBox, 400, 400);
+        return scene;
     }
 
     public Scene makeChatUI(User client) {
-        /* Make the root pane and set properties */
-        GridPane rootPane = new GridPane();
-        rootPane.setPadding(new Insets(20));
+        VBox vBox = new VBox();
+        vBox.setSpacing(20);
+        vBox.setPadding(new Insets(15, 20, 10, 10));
 
-        TextField chatTextField = new TextField(); // Area for user input
         TextArea chatArea = new TextArea(); // Area for exchanged messages
+        TextField chatTextField = new TextField(); // Area for user input
+        chatArea.setEditable(false);
 
-        /* Add the components to the root pane */
-        rootPane.add(chatTextField, 0, 9, 5, 1);
-        rootPane.add(chatArea, 0, 0, 5, 5);
+        vBox.getChildren().addAll(chatArea, chatTextField);
 
         // Initialize client thread
         System.out.println("Initializing Client Thread");
-        TestClient clientThread = new TestClient(SERVER_ADDRESS, SERVER_PORT, client, chatArea);
+        EchoClient clientThread = new EchoClient(SERVER_ADDRESS, SERVER_PORT, client, chatArea);
         clientThread.start();
 
         chatTextField.setOnAction(event -> {
@@ -109,7 +94,8 @@ public class ClientApplication extends Application {
         });
 
         /* Make and return the scene */
-        return new Scene(rootPane, 400, 400);
+        Scene scene = new Scene(vBox);
+        return scene;
     }
 
 

@@ -1,85 +1,64 @@
-/***
- * EchoClient
- * Example of a TCP client
- * Date: 10/01/04
- * Authors:
- */
 package Client;
 
-import domain.SystemMessage;
+import domain.Message;
 import domain.User;
 
-import java.io.*;
+import javafx.scene.control.TextArea;
+import java.io.IOException;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
 import java.net.Socket;
-import java.net.UnknownHostException;
 
-public class EchoClient {
+public class EchoClient extends Thread {
 
-    /**
-     * @param ipAdress = args[0]
-     * @param port     = args[1]
-     * @param stdIn
-     * @throws IOException
-     */
-    private static void join(String ipAdress, int port, BufferedReader stdIn) throws IOException {
-        Socket clientToServerSocket = null;
+    private String serverAdress;
 
+    private int serverPort;
+
+    private User client;
+
+    private Socket clientToServerSocket = null;
+
+    private ObjectOutputStream objectOutputStream = null;
+
+    private ObjectInputStream objectInputStream = null;
+
+    private ClientWriteThread clientWriteThread;
+
+    private ClientReadThread clientReadThread;
+
+    private TextArea textArea;
+
+    public EchoClient(String serverAdress, int serverPort, User client, TextArea textArea) {
+        this.serverAdress = serverAdress;
+        this.serverPort = serverPort;
+        this.client = client;
+        this.textArea = textArea;
         try {
-            // creation socket ==> connexion
-            clientToServerSocket = new Socket(ipAdress, port);
-            System.out.println("Connected to server " + clientToServerSocket.getInetAddress());
-        } catch (UnknownHostException e) {
-            System.err.println("Don't know about host:" + ipAdress);
-            System.exit(1);
+            this.clientToServerSocket = new Socket(serverAdress, serverPort);
+            this.objectOutputStream = new ObjectOutputStream(clientToServerSocket.getOutputStream());
+            this.objectInputStream = new ObjectInputStream(clientToServerSocket.getInputStream());
         } catch (IOException e) {
-            System.err.println("Couldn't get I/O for "
-                    + "the connection to:" + ipAdress);
-            System.exit(1);
+            e.printStackTrace();
         }
+        this.clientWriteThread = new ClientWriteThread(objectOutputStream, client);
+        this.clientReadThread = new ClientReadThread(objectInputStream, this.textArea);
+    }
 
-        System.out.println("Quel est votre nom d'utilisateur ? ");
+    public void sendMessage(Message message) {
+        System.out.println("sendMessage in Test Client");
+        clientWriteThread.sendMessage(message);
+    }
 
-        String name = stdIn.readLine();
+    public void run() {
+        System.out.println("Running Test Client");
 
-        System.out.println("Bienvenue à la salle de conversation, " + name + " !");
-
-        System.out.println("Pour quitter la conversation, il suffit d'envoyer le message "+ SystemMessage.QUIT.toString());
-
-        User user = new User();
-        user.setName(name);
-
-        ClientWriteThread clientWriteThread = new ClientWriteThread(new ObjectOutputStream(clientToServerSocket.getOutputStream()), user);
-        ClientReadThread clientReadThread = new ClientReadThread(new ObjectInputStream(clientToServerSocket.getInputStream()), null);
+        // creation socket ==> connexion
+        System.out.println("Connected to server " + clientToServerSocket.getInetAddress());
         clientWriteThread.start();
         clientReadThread.start();
         while (clientReadThread.isAlive() && clientWriteThread.isAlive()) {
         }
         System.out.println("Vous êtes deconnecté");
     }
-
-
-    /**
-     * main method
-     * accepts a connection, receives a message from client then sends an echo to the client
-     **/
-
-    public static void main(String[] args) throws IOException {
-
-        if (args.length != 2) {
-            System.out.println("Usage: java EchoClient <EchoServer host> <EchoServer port>");
-            System.exit(1);
-        }
-
-        BufferedReader stdIn = new BufferedReader(new InputStreamReader(System.in));
-        while (true) {
-            System.out.println("Pour rejoindre, entrez : " + SystemMessage.JOIN.toString());
-            String option = stdIn.readLine();
-
-            if (option.equals(SystemMessage.JOIN.toString())) {
-                join(args[0], new Integer(args[1]).intValue(), stdIn);
-
-            }
-        }
-    }
 }
-
