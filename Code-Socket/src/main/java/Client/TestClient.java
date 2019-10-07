@@ -3,6 +3,7 @@ package Client;
 import domain.Message;
 import domain.User;
 
+import javafx.scene.control.TextArea;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
@@ -26,10 +27,13 @@ public class TestClient extends Thread {
 
     private ClientReadThread clientReadThread;
 
-    public TestClient(String serverAdress, int serverPort, User client) {
+    private TextArea textArea;
+
+    public TestClient(String serverAdress, int serverPort, User client, TextArea textArea) {
         this.serverAdress = serverAdress;
         this.serverPort = serverPort;
         this.client = client;
+        this.textArea = textArea;
         try {
             this.clientToServerSocket = new Socket(serverAdress, serverPort);
             this.objectOutputStream = new ObjectOutputStream(clientToServerSocket.getOutputStream());
@@ -38,7 +42,7 @@ public class TestClient extends Thread {
             e.printStackTrace();
         }
         this.clientWriteThread = new ClientWriteThread(objectOutputStream, client);
-        this.clientReadThread = new ClientReadThread(objectInputStream);
+        this.clientReadThread = new ClientReadThread(objectInputStream, this.textArea);
     }
 
     public void sendMessage(Message message) {

@@ -49,7 +49,7 @@ public class EchoClient {
         user.setName(name);
 
         ClientWriteThread clientWriteThread = new ClientWriteThread(new ObjectOutputStream(clientToServerSocket.getOutputStream()), user);
-        ClientReadThread clientReadThread = new ClientReadThread(new ObjectInputStream(clientToServerSocket.getInputStream()));
+        ClientReadThread clientReadThread = new ClientReadThread(new ObjectInputStream(clientToServerSocket.getInputStream()), null);
         clientWriteThread.start();
         clientReadThread.start();
         while (clientReadThread.isAlive() && clientWriteThread.isAlive()) {

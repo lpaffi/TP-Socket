@@ -10,7 +10,6 @@ import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
-import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.GridPane;
 import javafx.stage.Stage;
 
@@ -24,14 +23,14 @@ public class ClientApplication extends Application {
     private final String SERVER_ADDRESS = "Luccas-MacBook-Air.local";
     private final int SERVER_PORT = 9999;
 
-    public static void main(String[] args){
+    public static void main(String[] args) {
         launch();
     }
 
     @Override
     public void stop() throws Exception {
         super.stop();
-        for (Thread thread: threads){
+        for (Thread thread : threads) {
             thread.interrupt();
         }
     }
@@ -62,18 +61,13 @@ public class ClientApplication extends Application {
         /* Make the button and its handler */
         Button submitClientInfoButton = new Button("Entrer");
         submitClientInfoButton.setOnAction(event -> {
-            String clientName =nameField.getText();
+            String clientName = nameField.getText();
             User client = new User();
             client.setName(clientName);
 
-            // Initialize client threads
-            System.out.println("Initializing Client Thread");
-            TestClient clientThread = new TestClient(SERVER_ADDRESS, SERVER_PORT, client);
-            clientThread.start();
-
             /* Change the scene of the primaryStage */
             primaryStage.close();
-            primaryStage.setScene(makeChatUI(client, clientThread));
+            primaryStage.setScene(makeChatUI(client));
             primaryStage.show();
         });
 
@@ -89,25 +83,27 @@ public class ClientApplication extends Application {
         return new Scene(rootPane, 400, 400);
     }
 
-    public Scene makeChatUI(User client, TestClient clientThread) {
+    public Scene makeChatUI(User client) {
         /* Make the root pane and set properties */
         GridPane rootPane = new GridPane();
         rootPane.setPadding(new Insets(20));
-        //rootPane.setAlignment(Pos.CENTER);
-        //rootPane.setHgap(10);
-        //rootPane.setVgap(10);
 
-        TextField chatTextField = new TextField();;
-        TextArea chatArea = new TextArea();
+        TextField chatTextField = new TextField(); // Area for user input
+        TextArea chatArea = new TextArea(); // Area for exchanged messages
+
         /* Add the components to the root pane */
         rootPane.add(chatTextField, 0, 9, 5, 1);
         rootPane.add(chatArea, 0, 0, 5, 5);
-        
+
+        // Initialize client thread
+        System.out.println("Initializing Client Thread");
+        TestClient clientThread = new TestClient(SERVER_ADDRESS, SERVER_PORT, client, chatArea);
+        clientThread.start();
+
         chatTextField.setOnAction(event -> {
             //Create and send message
             String content = chatTextField.getText();
             Message message = new Message(client.getName(), content, new Date());
-            System.out.println("Sending message to server : "+message.toString());
             clientThread.sendMessage(message);
             chatTextField.clear();
         });
@@ -115,8 +111,6 @@ public class ClientApplication extends Application {
         /* Make and return the scene */
         return new Scene(rootPane, 400, 400);
     }
-
-
 
 
 }
