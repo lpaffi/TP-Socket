@@ -24,7 +24,8 @@ public class ClientReadThread extends Thread {
 
         try {
             List<Message> historique = (List<Message>) objectInputStream.readObject();
-            historique.forEach(message -> System.out.println(message.toString()));
+            historique.forEach(message -> this.textArea.appendText(message.toString() + "\n"));
+
         } catch (IOException | ClassNotFoundException e) {
             e.printStackTrace();
         }
