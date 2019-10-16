@@ -11,6 +11,7 @@ import domain.History;
 import domain.Message;
 import domain.SystemMessage;
 
+import java.io.EOFException;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
@@ -55,15 +56,18 @@ public class ClientThread
      **/
     public void run() {
         System.out.println("Running Client Thread");
+        ObjectInputStream objectInputStream = null;
+        ObjectOutputStream objectOutputStream = null;
         try {
-            ObjectInputStream objectInputStream = new ObjectInputStream(clientSocket.getInputStream());
+            objectInputStream = new ObjectInputStream(clientSocket.getInputStream());
 
             System.out.println("Envoi historique de la discussion à " + clientSocket.toString());
-            ObjectOutputStream objectOutputStream = new ObjectOutputStream(clientSocket.getOutputStream());
+            objectOutputStream = new ObjectOutputStream(clientSocket.getOutputStream());
             objectOutputStream.writeObject(history.getMessageList());
             writers.put(socketId, objectOutputStream);
 
             while (true) {
+                try {
                 Message clientMessage = (Message) objectInputStream.readObject();
                 history.addMessage(clientMessage);
                 System.out.println(clientMessage.toString());
@@ -75,9 +79,18 @@ public class ClientThread
                 } else {
                     broadcastMessage(clientMessage);
                 }
+                }
+                catch(EOFException exception) {
+                    System.out.println("Client disconnected");
+                    writers.remove(socketId);
+                    objectInputStream.close();
+                    objectOutputStream.close();
+                    break;
+                }
             }
         } catch (Exception e) {
             System.err.println("Error in ClientThread:" + e);
+            writers.remove(objectOutputStream);
             e.printStackTrace();
         }
     }
